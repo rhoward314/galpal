@@ -86,7 +86,7 @@ new_pil_image = pil_image.resize((w_new,h_new))
 image = ImageTk.PhotoImage(new_pil_image)
 
 # create label widget in gui with image
-tk.Label(root, image=image, width=500,height=500,bg='gray').pack(pady=20)
+tk.Label(root, image=image, width=500,height=500,bg='lightgray').pack(pady=20)
 
 # keeps gui window open until you close it
 root.mainloop()

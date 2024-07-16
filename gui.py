@@ -44,11 +44,6 @@ from PIL import ImageTk, Image
 
 # actual code for the project starts here
 
-# image link (will eventually pull from a list of links)
-image_url = "https://science.nasa.gov/wp-content/uploads/2023/04/heic1901a-jpg.webp?w=2048&format=webp"
-# open image from link
-data = urlopen(image_url)
-
 # create a GUI window
 root = tk.Tk()
 # set title for window
@@ -56,14 +51,42 @@ root.title('Gal Pal Galaxy Classification')
 # set size of window
 root.geometry('800x600')
 
+# image link (will eventually pull from a list of links)
+image_url = "https://science.nasa.gov/wp-content/uploads/2023/04/heic1901a-jpg.webp?w=2048&format=webp"
+# open image from link
+data = urlopen(image_url)
+
 # create image object
 pil_image = Image.open(data)
+# get original image size
+w_old,h_old = pil_image.size
+
+# size of label box for image (square)
+box_size = 500 
+
+if w_old > h_old:
+    w_new = box_size
+    h_new = int(w_new * (h_old/w_old))
+elif h_old > w_old:
+    h_new = box_size
+    w_new = int(h_new * (w_old/h_old))
+
+#crop_size = np.min((w_old,h_old))
+#print(crop_size)
+#center_w = w_old / 2
+#center_h = h_old / 2
+#left_crop = center_w - (crop_size/2)
+#right_crop = center_w + (crop_size/2)
+#top_crop = center_h - (crop_size/2)
+#bottom_crop = center_h + (crop_size/2)
+#cropped_image = pil_image.crop((left_crop,top_crop,right_crop,bottom_crop))
+
 # resize image
-new_pil_image = pil_image.resize((500,500), Image.ANTIALIAS)
+new_pil_image = pil_image.resize((w_new,h_new))
 image = ImageTk.PhotoImage(new_pil_image)
 
 # create label widget in gui with image
-tk.Label(root, image=image, width=500,height=500).pack()
+tk.Label(root, image=image, width=500,height=500,bg='gray').pack(pady=20)
 
 # keeps gui window open until you close it
 root.mainloop()

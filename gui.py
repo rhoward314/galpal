@@ -22,6 +22,11 @@ def prepare_image(image_url):
     elif h_old > w_old:
         h_new = box_size
         w_new = int(h_new * (w_old/h_old))
+    elif h_old == w_old:
+        h_new = box_size
+        w_new = box_size
+    else:
+        print('something is wrong with this image')
     # resize image
     new_pil_image = pil_image.resize((w_new,h_new))
     tkimage = ImageTk.PhotoImage(new_pil_image)

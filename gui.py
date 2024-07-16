@@ -43,7 +43,6 @@ from PIL import ImageTk
 
 
 # actual code for the project starts here
-#test
 
 # image link (will eventually pull from a list of links)
 image_url = "https://science.nasa.gov/wp-content/uploads/2023/04/heic1901a-jpg.webp?w=2048&format=webp"
@@ -54,10 +53,19 @@ root.title('Gal Pal Galaxy Classification')
 root.geometry('800x600')
 
 # add image
-data = urlopen(image_url)
+#data = urlopen(image_url)
 #resized_image = data.resize(('600,400'))
-image = ImageTk.PhotoImage(data=data.read())
+#image = ImageTk.PhotoImage(data=data.read())
 #resized_image = image.resize(('600,400'))
-tk.Label(root, image=image).pack()
+#tk.Label(root, image=image).pack()
+
+# different way to add image
+canvas= tk.Canvas(root, width= 600, height= 400)
+canvas.pack()
+data = urlopen(image_url)
+image = ImageTk.PhotoImage(data=data.read())
+#resized_image= image.resize((300,205), Image.ANTIALIAS)
+#new_image= ImageTk.PhotoImage(resized_image)
+canvas.create_image(10,10, anchor=tk.NW, image=image)
 
 root.mainloop()

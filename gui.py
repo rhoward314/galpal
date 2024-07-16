@@ -2,7 +2,7 @@
 
 from urllib.request import urlopen
 import tkinter as tk
-from PIL import ImageTk
+from PIL import ImageTk, Image
 
 
 # this is the code i used to experiment with gui - delete later
@@ -46,26 +46,24 @@ from PIL import ImageTk
 
 # image link (will eventually pull from a list of links)
 image_url = "https://science.nasa.gov/wp-content/uploads/2023/04/heic1901a-jpg.webp?w=2048&format=webp"
+# open image from link
+data = urlopen(image_url)
 
 # create a GUI window
 root = tk.Tk()
+# set title for window
 root.title('Gal Pal Galaxy Classification')
+# set size of window
 root.geometry('800x600')
 
-# add image
-#data = urlopen(image_url)
-#resized_image = data.resize(('600,400'))
-#image = ImageTk.PhotoImage(data=data.read())
-#resized_image = image.resize(('600,400'))
-#tk.Label(root, image=image).pack()
+# create image object
+pil_image = Image.open(data)
+# resize image
+new_pil_image = pil_image.resize((500,500), Image.ANTIALIAS)
+image = ImageTk.PhotoImage(new_pil_image)
 
-# different way to add image
-canvas= tk.Canvas(root, width= 600, height= 400)
-canvas.pack()
-data = urlopen(image_url)
-image = ImageTk.PhotoImage(data=data.read())
-#resized_image= image.resize((300,205), Image.ANTIALIAS)
-#new_image= ImageTk.PhotoImage(resized_image)
-canvas.create_image(10,10, anchor=tk.NW, image=image)
+# create label widget in gui with image
+tk.Label(root, image=image, width=500,height=500).pack()
 
+# keeps gui window open until you close it
 root.mainloop()

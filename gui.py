@@ -52,4 +52,11 @@ root = tk.Tk()
 root.title('Gal Pal Galaxy Classification')
 root.geometry('800x600')
 
+# add image
+data = urlopen(image_url)
+#resized_image = data.resize(('600,400'))
+image = ImageTk.PhotoImage(data=data.read())
+#resized_image = image.resize(('600,400'))
+tk.Label(root, image=image).pack()
+
 root.mainloop()

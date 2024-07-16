@@ -45,9 +45,6 @@ root.title('Gal Pal Galaxy Classification')
 # set size of window
 root.geometry('800x600')
 
-
-#image_url = "https://science.nasa.gov/wp-content/uploads/2023/04/heic1901a-jpg.webp?w=2048&format=webp"
-
 # create label with box for image
 image_label = tk.Label(root, width=500,height=500,bg='lightgray')
 image_label.pack(pady=20)

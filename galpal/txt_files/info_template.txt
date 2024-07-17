@@ -1,8 +1,8 @@
 ## spiral
-_ is a spiral galaxy! It is located _ light years away in the _ cluster. It has a stellar mass that is _ times greater than our sun.
+_ is a spiral galaxy! It is located _ light years away in the _ constellation. It has a stellar mass that is _ times greater than our sun.
 This is a star-forming galaxy with a star-formation rate of _ solar masses per year! For comparison, the Milky Way forms stars at a rate of
 roughly one solar mass per year.
 
 ## elliptical
-_ is an elliptical galaxy! It is located _ light years away in the _ cluster. It has a stellar mass that is _ times greater than our sun.
+_ is an elliptical galaxy! It is located _ light years away in the _ constellation. It has a stellar mass that is _ times greater than our sun.
 It contains an old stellar population, and it is not actively forming stars. 

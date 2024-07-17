@@ -43,6 +43,21 @@ def prepare_image(image_url):
     # create label widget in gui with image
     return tkimage
 
+
+def dropdown(window):
+    options = [
+        'Galaxy 1', 'Galaxy 2', 'Galaxy 3', 'Galaxy 4', 'Galaxy 5',
+        'Galaxy 6', 'Galaxy 7', 'Galaxy 8', 'Galaxy 9', 'Galaxy 10'
+    ]
+
+    galaxy_option = tk.StringVar(window)
+    galaxy_option.set(options[0])
+
+    dropdown = tk.OptionMenu(window, galaxy_option, *options)
+    dropdown.pack() 
+
+
+
 def main():
     # read in list of galaxies
     df = pd.read_csv('classifications.txt',sep='\s+')
@@ -68,6 +83,9 @@ def main():
 
     elliptical_button = tk.Button(root, text = 'Elliptical')
     elliptical_button.place(x = 678, y = 110)
+
+    #dropdown menu
+    dropdown(root)
 
     # keeps gui window open until you close it
     root.mainloop()

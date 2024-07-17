@@ -5,6 +5,8 @@ import tkinter as tk
 from PIL import ImageTk, Image
 import numpy as np
 import pandas as pd
+from functools import partial
+import Galaxy  # delete this later when everything is set up right
 
 def prepare_image(image_url):
     """Prepare-Image
@@ -12,7 +14,7 @@ def prepare_image(image_url):
     Opens an image from a link and makes a PhotoImage object that contains an image.
     
     Args:
-        image_url (str): string. Link to galaxy image from 'classifications.txt'.
+        image_url (str): string. Link to galaxy image from 'image_links.txt'.
     
     Returns:
         PhotoImage: PhotoImage object containing image.
@@ -56,13 +58,35 @@ def dropdown(window):
     dropdown = tk.OptionMenu(window, galaxy_option, *options)
     dropdown.pack() 
 
+def update_galaxy_info(galaxy_obj,which_gal,link_df,desc_df):
+    galaxy_obj.number = which_gal
+    galaxy_obj.name = link_df['#name'][which_gal]
+    galaxy_obj.morph_type = desc_df[' classification'][which_gal]
+    url = link_df['link'][which_gal]  # should the link be part of the galaxy class?
+    return url
+
+# make button function
+def spiral_func(galaxy_obj):
+    #print('You selected spiral.')
+    galaxy_obj.choice = 'spiral'
+
+def elliptical_func(galaxy_obj):
+    #print('You selected elliptical.')
+    galaxy_obj.choice = 'elliptical'
 
 
 def main():
-    # read in list of galaxies
-    df = pd.read_csv('classifications.txt', sep='\s+')
-    which_gal = np.random.randint(0, 10)
-    url = df['link'][which_gal]
+
+    # create galaxy object (this will probably go in main.py?)
+    current_gal = Galaxy.Galaxy(0,0,0,0,0,0)
+
+    # read in text files with galaxy info
+    link_df = pd.read_csv('txt_files/image_links.txt',sep='\s+')
+    desc_df = pd.read_csv('txt_files/description_info.txt')
+    #which_gal = np.random.randint(0, 10)
+    which_gal = 0
+    url = update_galaxy_info(current_gal,which_gal,link_df,desc_df)
+    print(current_gal.name)
 
     # create a GUI window
     root = tk.Tk()
@@ -78,7 +102,7 @@ def main():
     image_label_height = 500
     image_label_y_offset = 30
     margin_width = (root_width - image_label_width) / 2
-    image_label = tk.Label(root, width=image_label_width, height=image_label_height, bg='gray')
+    image_label = tk.Label(root, width=image_label_width, height=image_label_height, bg='lightgray')
     image_label.place(x=margin_width, y=image_label_y_offset)
     image1 = prepare_image(url)
     image_label.configure(image=image1)
@@ -87,16 +111,16 @@ def main():
     button_frame = tk.Frame(root)#, bg='green')
     spi_ell_pady = 5
 
-    spiral_button = tk.Button(button_frame, text='Spiral')
+    spiral_button = tk.Button(button_frame, text='Spiral',command=partial(spiral_func,current_gal))
     spiral_button.grid(row=0, column=0, pady=spi_ell_pady)
 
-    elliptical_button = tk.Button(button_frame, text='Elliptical')
+    elliptical_button = tk.Button(button_frame, text='Elliptical',command=partial(elliptical_func,current_gal))
     elliptical_button.grid(row=1, column=0, pady=spi_ell_pady)
 
     # get width of button_frame, then use that to center button_frame in the empty space to the right of the image
     button_frame.place(x=0, y=0)
     button_frame.update()
-    button_frame_width, button_info_height = button_frame.winfo_width(), button_frame.winfo_height()
+    button_frame_width, button_frame_height = button_frame.winfo_width(), button_frame.winfo_height()
     button_frame.place_forget()
     button_frame.place(x=root_width - margin_width + (margin_width - button_frame_width) / 2, y=70)
 
@@ -127,6 +151,8 @@ def main():
 
     # keeps gui window open until you close it
     root.mainloop()
+
+    print(current_gal.choice)
 
 if __name__ == '__main__':
     main()

@@ -1,11 +1,11 @@
 #name	link	classification
-M51	https://science.nasa.gov/wp-content/uploads/2023/04/m51-and-companion_0-jpg.webp?w=2048&format=webp	spiral
-M61	https://science.nasa.gov/wp-content/uploads/2023/04/potw1324a-jpg.webp?w=2048&format=webp	spiral
-M63	https://science.nasa.gov/wp-content/uploads/2023/04/potw1536a-jpg.webp?w=2048&format=webp	spiral
-M64	https://science.nasa.gov/wp-content/uploads/2023/04/black-eye-galaxy-print-jpg.webp?w=2048&format=webp	spiral
-M66	https://science.nasa.gov/wp-content/uploads/2023/04/heic1006a-jpg.webp?w=2048&format=webp	spiral
-M60	https://science.nasa.gov/wp-content/uploads/2023/04/m60_and_ngc_4647-jpg.webp?w=2048&format=webp elliptical
-M84	https://science.nasa.gov/wp-content/uploads/2023/04/hubble_friday_06052015-jpg.webp?w=640&format=webp	elliptical
-M85	https://science.nasa.gov/wp-content/uploads/2023/04/m85_0-jpg.webp?w=640&format=webp	elliptical
-M87	https://science.nasa.gov/wp-content/uploads/2023/04/m87-full_jpg-jpg.webp?w=640&format=webp	elliptical
-M105	https://science.nasa.gov/wp-content/uploads/2023/04/m105-jpg.webp?w=640&format=webp	elliptical
+M51	https://science.nasa.gov/wp-content/uploads/2023/04/m51-and-companion_0-jpg.webp?w=2048&format=webp
+M61	https://science.nasa.gov/wp-content/uploads/2023/04/potw1324a-jpg.webp?w=2048&format=webp
+M63	https://science.nasa.gov/wp-content/uploads/2023/04/potw1536a-jpg.webp?w=2048&format=webp
+M64	https://science.nasa.gov/wp-content/uploads/2023/04/black-eye-galaxy-print-jpg.webp?w=2048&format=webp
+M66	https://science.nasa.gov/wp-content/uploads/2023/04/heic1006a-jpg.webp?w=2048&format=webp
+M60	https://science.nasa.gov/wp-content/uploads/2023/04/m60_and_ngc_4647-jpg.webp?w=2048&format=webp
+M84	https://science.nasa.gov/wp-content/uploads/2023/04/hubble_friday_06052015-jpg.webp?w=640&format=webp
+M85	https://science.nasa.gov/wp-content/uploads/2023/04/m85_0-jpg.webp?w=640&format=webp
+M87	https://science.nasa.gov/wp-content/uploads/2023/04/m87-full_jpg-jpg.webp?w=640&format=webp
+M105	https://science.nasa.gov/wp-content/uploads/2023/04/m105-jpg.webp?w=640&format=webp

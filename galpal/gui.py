@@ -43,6 +43,21 @@ def prepare_image(image_url):
     # create label widget in gui with image
     return tkimage
 
+
+def dropdown(window):
+    options = [
+        'Galaxy 1', 'Galaxy 2', 'Galaxy 3', 'Galaxy 4', 'Galaxy 5',
+        'Galaxy 6', 'Galaxy 7', 'Galaxy 8', 'Galaxy 9', 'Galaxy 10'
+    ]
+
+    galaxy_option = tk.StringVar(window)
+    galaxy_option.set(options[0])
+
+    dropdown = tk.OptionMenu(window, galaxy_option, *options)
+    dropdown.pack() 
+
+
+
 def main():
     # read in list of galaxies
     df = pd.read_csv('classifications.txt', sep='\s+')
@@ -106,6 +121,9 @@ def main():
     bottom_margin_height = root_height - image_label_y_offset - image_label_height
     npr_frame.place(x=(root_width - npr_frame_width) / 2,
                     y=image_label_y_offset + image_label_height + (bottom_margin_height - npr_frame_height)/4)
+
+    #dropdown menu
+    dropdown(root)
 
     # keeps gui window open until you close it
     root.mainloop()

@@ -46,11 +46,17 @@ root.title('Gal Pal Galaxy Classification')
 root.geometry('800x600')
 
 # create label with box for image
-image_label = tk.Label(root, width=500,height=500,bg='lightgray')
-image_label.pack(pady=20)
-
+image_label = tk.Label(root, width=500, height=500, bg='lightgray')
+image_label.place(x = 150, y = 30)
 image1 = prepare_image(url)
 image_label.configure(image=image1)
+
+# spiral/elliptical buttons
+spiral_button = tk.Button(root, text = 'Spiral')
+spiral_button.place(x = 690, y = 70)
+
+elliptical_button = tk.Button(root, text = 'Elliptical')
+elliptical_button.place(x = 678, y = 110)
 
 # keeps gui window open until you close it
 root.mainloop()

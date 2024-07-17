@@ -45,8 +45,8 @@ def prepare_image(image_url):
 
 def main():
     # read in list of galaxies
-    df = pd.read_csv('classifications.txt',sep='\s+')
-    which_gal = np.random.randint(0,10)
+    df = pd.read_csv('classifications.txt', sep='\s+')
+    which_gal = np.random.randint(0, 10)
     url = df['link'][which_gal]
 
     # create a GUI window
@@ -54,20 +54,51 @@ def main():
     # set title for window
     root.title('Gal Pal Galaxy Classification')
     # set size of window
-    root.geometry('800x600')
+    root_width = 1100 # width in pixels
+    root_height = 650 # height in pixels
+    root.geometry(f'{root_width}x{root_height}')
 
     # create label with box for image
-    image_label = tk.Label(root, width=500, height=500, bg='lightgray')
-    image_label.place(x = 150, y = 30)
+    image_label_width = 500
+    image_label_height = 500
+    margin_width = (root_width - image_label_width) / 2
+    image_label = tk.Label(root, width=image_label_width, height=image_label_height, bg='lightgray')
+    image_label.place(x=margin_width, y=30)
     image1 = prepare_image(url)
     image_label.configure(image=image1)
 
     # spiral/elliptical buttons
-    spiral_button = tk.Button(root, text = 'Spiral')
-    spiral_button.place(x = 690, y = 70)
+    button_frame = tk.Frame(root)#, bg='green')
 
-    elliptical_button = tk.Button(root, text = 'Elliptical')
-    elliptical_button.place(x = 678, y = 110)
+    spiral_button = tk.Button(button_frame, text='Spiral')
+    spiral_button.grid(row=0, column=0, pady=5)
+
+    elliptical_button = tk.Button(button_frame, text='Elliptical')
+    elliptical_button.grid(row=1, column=0, pady=5)
+
+    # get width of button_frame, then use that to center button_frame in the empty space to the right of the image
+    button_frame.place(x=0, y=0)
+    button_frame.update()
+    button_frame_width, button_info_height = button_frame.winfo_width(), button_frame.winfo_height()
+    button_frame.place_forget()
+    button_frame.place(x=root_width - margin_width + (margin_width - button_frame_width) / 2, y=70)
+
+    # next/previous/random buttons
+    npr_frame = tk.Frame(root, bg='blue')
+
+    prev_button = tk.Button(npr_frame, text='Previous')
+    prev_button.grid(row=0, column=0)
+
+    rand_button = tk.Button(npr_frame, text='Random')
+    rand_button.grid(row=0, column=1)
+
+    next_button = tk.Button(npr_frame, text='Next')
+    next_button.grid(row=0, column=2)
+
+    # center next/prev/rand button frame below galaxy image
+    npr_frame.place(x=0, y=0)
+    npr_frame.update()
+    npr_frame_width, npr_frame_height = npr_frame.winfo_width(), npr_frame.winfo_height()
 
     # keeps gui window open until you close it
     root.mainloop()

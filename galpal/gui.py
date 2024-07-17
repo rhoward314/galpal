@@ -7,6 +7,16 @@ import numpy as np
 import pandas as pd
 
 def prepare_image(image_url):
+    """Prepare-Image
+    
+    Opens an image from a link and makes a PhotoImage object that contains an image.
+    
+    Args:
+        image_url (str): string. Link to galaxy image from 'classifications.txt'.
+    
+    Returns:
+        PhotoImage: PhotoImage object containing image.
+    """
     # open image from link and create an image object that can be added to label in gui window
     # open image from link
     data = urlopen(image_url)
@@ -33,30 +43,34 @@ def prepare_image(image_url):
     # create label widget in gui with image
     return tkimage
 
-# read in list of galaxies
-df = pd.read_csv('classifications.txt',sep='\s+')
-which_gal = np.random.randint(0,10)
-url = df['link'][which_gal]
+def main():
+    # read in list of galaxies
+    df = pd.read_csv('classifications.txt',sep='\s+')
+    which_gal = np.random.randint(0,10)
+    url = df['link'][which_gal]
 
-# create a GUI window
-root = tk.Tk()
-# set title for window
-root.title('Gal Pal Galaxy Classification')
-# set size of window
-root.geometry('800x600')
+    # create a GUI window
+    root = tk.Tk()
+    # set title for window
+    root.title('Gal Pal Galaxy Classification')
+    # set size of window
+    root.geometry('800x600')
 
-# create label with box for image
-image_label = tk.Label(root, width=500, height=500, bg='lightgray')
-image_label.place(x = 150, y = 30)
-image1 = prepare_image(url)
-image_label.configure(image=image1)
+    # create label with box for image
+    image_label = tk.Label(root, width=500, height=500, bg='lightgray')
+    image_label.place(x = 150, y = 30)
+    image1 = prepare_image(url)
+    image_label.configure(image=image1)
 
-# spiral/elliptical buttons
-spiral_button = tk.Button(root, text = 'Spiral')
-spiral_button.place(x = 690, y = 70)
+    # spiral/elliptical buttons
+    spiral_button = tk.Button(root, text = 'Spiral')
+    spiral_button.place(x = 690, y = 70)
 
-elliptical_button = tk.Button(root, text = 'Elliptical')
-elliptical_button.place(x = 678, y = 110)
+    elliptical_button = tk.Button(root, text = 'Elliptical')
+    elliptical_button.place(x = 678, y = 110)
 
-# keeps gui window open until you close it
-root.mainloop()
+    # keeps gui window open until you close it
+    root.mainloop()
+
+if __name__ == '__main__':
+    main()

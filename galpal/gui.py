@@ -54,27 +54,29 @@ def main():
     # set title for window
     root.title('Gal Pal Galaxy Classification')
     # set size of window
-    root_width = 1100 # width in pixels
+    root_width = 1000 # width in pixels
     root_height = 650 # height in pixels
     root.geometry(f'{root_width}x{root_height}')
 
     # create label with box for image
     image_label_width = 500
     image_label_height = 500
+    image_label_y_offset = 30
     margin_width = (root_width - image_label_width) / 2
-    image_label = tk.Label(root, width=image_label_width, height=image_label_height, bg='lightgray')
-    image_label.place(x=margin_width, y=30)
+    image_label = tk.Label(root, width=image_label_width, height=image_label_height, bg='gray')
+    image_label.place(x=margin_width, y=image_label_y_offset)
     image1 = prepare_image(url)
     image_label.configure(image=image1)
 
     # spiral/elliptical buttons
     button_frame = tk.Frame(root)#, bg='green')
+    spi_ell_pady = 5
 
     spiral_button = tk.Button(button_frame, text='Spiral')
-    spiral_button.grid(row=0, column=0, pady=5)
+    spiral_button.grid(row=0, column=0, pady=spi_ell_pady)
 
     elliptical_button = tk.Button(button_frame, text='Elliptical')
-    elliptical_button.grid(row=1, column=0, pady=5)
+    elliptical_button.grid(row=1, column=0, pady=spi_ell_pady)
 
     # get width of button_frame, then use that to center button_frame in the empty space to the right of the image
     button_frame.place(x=0, y=0)
@@ -84,21 +86,26 @@ def main():
     button_frame.place(x=root_width - margin_width + (margin_width - button_frame_width) / 2, y=70)
 
     # next/previous/random buttons
-    npr_frame = tk.Frame(root, bg='blue')
+    npr_frame = tk.Frame(root)
+    npr_padx = 3
 
     prev_button = tk.Button(npr_frame, text='Previous')
-    prev_button.grid(row=0, column=0)
+    prev_button.grid(row=0, column=0, padx = npr_padx)
 
     rand_button = tk.Button(npr_frame, text='Random')
-    rand_button.grid(row=0, column=1)
+    rand_button.grid(row=0, column=1, padx = npr_padx)
 
     next_button = tk.Button(npr_frame, text='Next')
-    next_button.grid(row=0, column=2)
+    next_button.grid(row=0, column=2, padx = npr_padx)
 
     # center next/prev/rand button frame below galaxy image
     npr_frame.place(x=0, y=0)
     npr_frame.update()
     npr_frame_width, npr_frame_height = npr_frame.winfo_width(), npr_frame.winfo_height()
+    npr_frame.place_forget()
+    bottom_margin_height = root_height - image_label_y_offset - image_label_height
+    npr_frame.place(x=(root_width - npr_frame_width) / 2,
+                    y=image_label_y_offset + image_label_height + (bottom_margin_height - npr_frame_height)/4)
 
     # keeps gui window open until you close it
     root.mainloop()

@@ -7,5 +7,5 @@ name = "galpal"
 version = "0.0.1"
 
 dependencies = [
-  "numpy", "PIL","pandas","tkinter",
+  "numpy", "pillow","pandas","tkinter",
 ]

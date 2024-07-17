@@ -1,5 +1,4 @@
 numpy
-urllib
 PIL
 pandas
 tkinter

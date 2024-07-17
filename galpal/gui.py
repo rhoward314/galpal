@@ -7,6 +7,16 @@ import numpy as np
 import pandas as pd
 
 def prepare_image(image_url):
+    """Prepare-Image
+    
+    Opens an image from a link and makes a PhotoImage object that contains an image.
+    
+    Args:
+        image_url (str): string. Link to galaxy image from 'classifications.txt'.
+    
+    Returns:
+        PhotoImage: PhotoImage object containing image.
+    """
     # open image from link and create an image object that can be added to label in gui window
     # open image from link
     data = urlopen(image_url)

@@ -20,12 +20,9 @@ def prepare_image(image_url):
         PhotoImage: PhotoImage object containing image.
     """
     # open image from link and create an image object that can be added to label in gui window
-    # open image from link
-    data = urlopen(image_url)
-    # create image object
-    pil_image = Image.open(data)
-    # get original image size
-    w_old,h_old = pil_image.size
+    data = urlopen(image_url) # open image from link
+    pil_image = Image.open(data) # create image object
+    w_old, h_old = pil_image.size # get original image size
     # size of label box for image (square)
     box_size = 500 
     if w_old > h_old:
@@ -46,26 +43,14 @@ def prepare_image(image_url):
     return tkimage
 
 class temp_gui_class:
-    def __init__(self,which_gal,url=0):
+    def __init__(self, which_gal, url=0):
         # which_gal and url need to be attributes of an object to update with buttons
         # url should go in galaxy class, not sure where which_gal will go
         # using this for now just to get buttons working
         self.which_gal = which_gal
         self.url = url
 
-def dropdown(window):
-    options = [
-        'Galaxy 1', 'Galaxy 2', 'Galaxy 3', 'Galaxy 4', 'Galaxy 5',
-        'Galaxy 6', 'Galaxy 7', 'Galaxy 8', 'Galaxy 9', 'Galaxy 10'
-    ]
-
-    galaxy_option = tk.StringVar(window)
-    galaxy_option.set(options[0])
-
-    dropdown = tk.OptionMenu(window, galaxy_option, *options)
-    dropdown.pack() 
-
-def update_gal(gui_obj,gal_obj,link_df,desc_df):
+def update_gal(gui_obj, gal_obj, link_df, desc_df):
     gal_obj.number = gui_obj.which_gal
     gal_obj.name = link_df['#name'][gal_obj.number]
     gal_obj.morph_type = desc_df[' classification'][gal_obj.number]
@@ -78,29 +63,29 @@ def spiral_func(galaxy_obj):
 def elliptical_func(galaxy_obj):
     galaxy_obj.choice = 'elliptical'
 
-def prev_gal(gui_obj,gal_objs,link_df,desc_df,image_label):
+def prev_gal(gui_obj, gal_objs, link_df, desc_df, image_label):
     if gui_obj.which_gal > 0:
         gui_obj.which_gal -= 1
     else:
-        gui_obj.which_gal = len(gal_objs)-1
-    update_gal(gui_obj,gal_objs[gui_obj.which_gal],link_df,desc_df)
+        gui_obj.which_gal = len(gal_objs) - 1
+    update_gal(gui_obj, gal_objs[gui_obj.which_gal], link_df, desc_df)
     new_image = prepare_image(gui_obj.url)
     image_label.configure(image=new_image)
     image_label.image = new_image
 
-def rand_gal(gui_obj,gal_objs,link_df,desc_df,image_label):
-    gui_obj.which_gal = np.random.randint(0,len(gal_objs))
-    update_gal(gui_obj,gal_objs[gui_obj.which_gal],link_df,desc_df)
+def rand_gal(gui_obj, gal_objs, link_df, desc_df, image_label):
+    gui_obj.which_gal = np.random.randint(0, len(gal_objs))
+    update_gal(gui_obj, gal_objs[gui_obj.which_gal], link_df, desc_df)
     new_image = prepare_image(gui_obj.url)
     image_label.configure(image=new_image)
     image_label.image = new_image
 
-def next_gal(gui_obj,gal_objs,link_df,desc_df,image_label):
-    if gui_obj.which_gal < len(gal_objs)-1:
+def next_gal(gui_obj, gal_objs, link_df, desc_df, image_label):
+    if gui_obj.which_gal < len(gal_objs) - 1:
         gui_obj.which_gal += 1
     else:
         gui_obj.which_gal = 0
-    update_gal(gui_obj,gal_objs[gui_obj.which_gal],link_df,desc_df)
+    update_gal(gui_obj, gal_objs[gui_obj.which_gal], link_df, desc_df)
     new_image = prepare_image(gui_obj.url)
     image_label.configure(image=new_image)
     image_label.image = new_image
@@ -112,19 +97,17 @@ def main():
     #current_gal = Galaxy.Galaxy(0,0,0,0,0,0)
 
     # read in text files with galaxy info
-    link_df = pd.read_csv('txt_files/image_links.txt',sep='\s+')
+    link_df = pd.read_csv('txt_files/image_links.txt', sep='\s+')
     desc_df = pd.read_csv('txt_files/description_info.txt')
     # create list of galaxy objects so they all exist and can be modified by functions
-    gal_objs = [Galaxy.Galaxy(i,0,0,0,0,0) for i in range(0,len(link_df['#name']))]
+    gal_objs = [Galaxy.Galaxy(i,0,0,0,0,0) for i in range(len(link_df['#name']))]
     gui_obj = temp_gui_class(0)
     #current_gal = gal_objs[gui_obj.which_gal]
-    update_gal(gui_obj,gal_objs[gui_obj.which_gal],link_df,desc_df)
+    update_gal(gui_obj, gal_objs[gui_obj.which_gal], link_df, desc_df)
     print(gal_objs[gui_obj.which_gal].name)
 
-    # create a GUI window
-    root = tk.Tk()
-    # set title for window
-    root.title('Gal Pal Galaxy Classification')
+    root = tk.Tk() # create a GUI window
+    root.title('Gal Pal Galaxy Classification') # set title for window
     # set size of window
     root_width = 1000 # width in pixels
     root_height = 650 # height in pixels
@@ -140,14 +123,27 @@ def main():
     image1 = prepare_image(gui_obj.url)
     image_label.configure(image=image1)
 
+    # dropdown menu
+    options = [f'Galaxy {i}' for i in range(1, len(gal_objs) + 1)]
+
+    galaxy_option = tk.StringVar(root)
+    galaxy_option.set(options[0])
+
+    dropdown = tk.OptionMenu(root, galaxy_option, *options)
+    dropdown.place(x=0, y=0)
+    dropdown.update()
+    dropdown_width, dropdown_height = dropdown.winfo_width(), dropdown.winfo_height()
+    dropdown.place_forget()
+    dropdown.place(x=(margin_width - dropdown_width) / 2, y=70)
+
     # spiral/elliptical buttons
     button_frame = tk.Frame(root)#, bg='green')
     spi_ell_pady = 5
 
-    spiral_button = tk.Button(button_frame, text='Spiral',command=partial(spiral_func,gal_objs[gui_obj.which_gal]))
+    spiral_button = tk.Button(button_frame, text='Spiral', command=partial(spiral_func, gal_objs[gui_obj.which_gal]))
     spiral_button.grid(row=0, column=0, pady=spi_ell_pady)
 
-    elliptical_button = tk.Button(button_frame, text='Elliptical',command=partial(elliptical_func,gal_objs[gui_obj.which_gal]))
+    elliptical_button = tk.Button(button_frame, text='Elliptical', command=partial(elliptical_func, gal_objs[gui_obj.which_gal]))
     elliptical_button.grid(row=1, column=0, pady=spi_ell_pady)
 
     # get width of button_frame, then use that to center button_frame in the empty space to the right of the image
@@ -161,13 +157,13 @@ def main():
     npr_frame = tk.Frame(root)
     npr_padx = 3
 
-    prev_button = tk.Button(npr_frame, text='Previous',command=partial(prev_gal,gui_obj,gal_objs,link_df,desc_df,image_label))
+    prev_button = tk.Button(npr_frame, text='Previous', command=partial(prev_gal, gui_obj, gal_objs, link_df, desc_df, image_label))
     prev_button.grid(row=0, column=0, padx = npr_padx)
 
-    rand_button = tk.Button(npr_frame, text='Random',command=partial(rand_gal,gui_obj,gal_objs,link_df,desc_df,image_label))
+    rand_button = tk.Button(npr_frame, text='Random', command=partial(rand_gal, gui_obj, gal_objs, link_df, desc_df, image_label))
     rand_button.grid(row=0, column=1, padx = npr_padx)
 
-    next_button = tk.Button(npr_frame, text='Next',command=partial(next_gal,gui_obj,gal_objs,link_df,desc_df,image_label))
+    next_button = tk.Button(npr_frame, text='Next', command=partial(next_gal, gui_obj, gal_objs, link_df, desc_df, image_label))
     next_button.grid(row=0, column=2, padx = npr_padx)
 
     # center next/prev/rand button frame below galaxy image
@@ -180,9 +176,6 @@ def main():
                     y=image_label_y_offset + image_label_height + (bottom_margin_height - npr_frame_height)/4)
     
     print('created buttons')
-
-    #dropdown menu
-    dropdown(root)
 
     # keeps gui window open until you close it
     root.mainloop()

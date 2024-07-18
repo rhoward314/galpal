@@ -6,7 +6,7 @@ from PIL import ImageTk, Image
 import numpy as np
 import pandas as pd
 from functools import partial
-import Galaxy  # delete this later when everything is set up right
+import galaxy  # delete this later when everything is set up right
 
 def prepare_image(image_url):
     """Prepare-Image
@@ -90,7 +90,6 @@ def next_gal(gui_obj, gal_objs, link_df, desc_df, image_label):
     image_label.configure(image=new_image)
     image_label.image = new_image
 
-
 def main():
 
     # create galaxy object (this will probably go in main.py?)
@@ -100,7 +99,7 @@ def main():
     link_df = pd.read_csv('txt_files/image_links.txt', sep='\s+')
     desc_df = pd.read_csv('txt_files/description_info.txt')
     # create list of galaxy objects so they all exist and can be modified by functions
-    gal_objs = [Galaxy.Galaxy(i,0,0,0,0,0) for i in range(len(link_df['#name']))]
+    gal_objs = [galaxy.Galaxy(i,0,0,0,0,0) for i in range(len(link_df['#name']))]
     gui_obj = temp_gui_class(0)
     #current_gal = gal_objs[gui_obj.which_gal]
     update_gal(gui_obj, gal_objs[gui_obj.which_gal], link_df, desc_df)

@@ -1,4 +1,4 @@
-#name	link	classification
+#name	link
 M51	https://science.nasa.gov/wp-content/uploads/2023/04/m51-and-companion_0-jpg.webp?w=2048&format=webp
 M61	https://science.nasa.gov/wp-content/uploads/2023/04/potw1324a-jpg.webp?w=2048&format=webp
 M63	https://science.nasa.gov/wp-content/uploads/2023/04/potw1536a-jpg.webp?w=2048&format=webp

@@ -49,6 +49,8 @@ class temp_gui_class:
         # using this for now just to get buttons working
         self.which_gal = which_gal
         self.url = url
+        self.grade = 0
+        self.attempts = 0
 
 def update_gal(gui_obj, gal_obj, link_df, desc_df):
     gal_obj.number = gui_obj.which_gal
@@ -57,27 +59,32 @@ def update_gal(gui_obj, gal_obj, link_df, desc_df):
     gui_obj.url = link_df['link'][gal_obj.number]  # should the link be part of the galaxy class?
 
 # check if user selection of spiral or elliptical is correct
-def is_correct(gal_obj):
+def is_correct(gui_obj,gal_obj,score_label):
+    gui_obj.attempts += 1
     if gal_obj.choice == gal_obj.morph_type:
+        gal_obj.grade = 1
+        gui_obj.grade += 1
+        score_text = str(gui_obj.grade) + ' correct out of ' + str(gui_obj.attempts)+ ' attempts.'
+        score_label.configure(text=score_text,width=25,wraplength=200)
         return 'That is correct!'
     else:
+        gal_obj.grade = 0
+        score_text = str(gui_obj.grade) + ' correct out of ' + str(gui_obj.attempts)+ ' attempts.'
+        score_label.configure(text=score_text,width=25,wraplength=200)
         return 'That is incorrect.'
 
 # make button function
-def spiral_func(gui_obj,gal_objs,info_label):
+def spiral_func(gui_obj,gal_objs,info_label,score_label):
     galaxy_obj = gal_objs[gui_obj.which_gal]
-    #print('you selected spiral')
     galaxy_obj.choice = 'spiral'
-    label_text = 'You selected spiral. ' + is_correct(galaxy_obj)
+    label_text = 'You selected spiral.\n' + is_correct(gui_obj,galaxy_obj,score_label)
     info_label.configure(text=label_text)
-    #print(galaxy_obj.name)
-    #print(galaxy_obj.choice)
 
-def elliptical_func(gui_obj,gal_objs,info_label):
+def elliptical_func(gui_obj,gal_objs,info_label,score_label):
     galaxy_obj = gal_objs[gui_obj.which_gal]
-    #print('you selected elliptical')
     galaxy_obj.choice = 'elliptical'
-    info_label.configure(text='You selected elliptical.')
+    label_text = 'You selected elliptical.\n' + is_correct(gui_obj,galaxy_obj,score_label)
+    info_label.configure(text=label_text)
 
 def prev_gal(gui_obj, gal_objs, link_df, desc_df, image_label,info_label):
     info_label.configure(text='')
@@ -120,9 +127,7 @@ def main():
     # create list of galaxy objects so they all exist and can be modified by functions
     gal_objs = [galaxy.Galaxy(i,0,0,0,0,0) for i in range(len(link_df['#name']))]
     gui_obj = temp_gui_class(0)
-    #current_gal = gal_objs[gui_obj.which_gal]
     update_gal(gui_obj, gal_objs[gui_obj.which_gal], link_df, desc_df)
-    print(gal_objs[gui_obj.which_gal].name)
 
     root = tk.Tk() # create a GUI window
     root.title('Gal Pal Galaxy Classification') # set title for window
@@ -164,6 +169,11 @@ def main():
     info_label_y = dropdown_y + dropdown_height + 250
     info_label.place(x=15,y=info_label_y)
 
+    # create label for score
+    score_text = str(gui_obj.grade) + ' correct out of ' + str(gui_obj.attempts)+ ' attempts.'
+    score_label = tk.Label(root, text=score_text,width=25,wraplength=200)
+    score_label.place(x=15,y=root_height-90)
+
     # next/previous/random buttons
     npr_frame = tk.Frame(root)
     npr_padx = 3
@@ -190,10 +200,10 @@ def main():
     button_frame = tk.Frame(root)#, bg='green')
     spi_ell_pady = 5
 
-    spiral_button = tk.Button(button_frame, text='Spiral', command=partial(spiral_func, gui_obj,gal_objs,info_label))
+    spiral_button = tk.Button(button_frame, text='Spiral', command=partial(spiral_func, gui_obj,gal_objs,info_label,score_label))
     spiral_button.grid(row=0, column=0, pady=spi_ell_pady)
 
-    elliptical_button = tk.Button(button_frame, text='Elliptical', command=partial(elliptical_func, gui_obj,gal_objs,info_label))
+    elliptical_button = tk.Button(button_frame, text='Elliptical', command=partial(elliptical_func, gui_obj,gal_objs,info_label,score_label))
     elliptical_button.grid(row=1, column=0, pady=spi_ell_pady)
 
     # get width of button_frame, then use that to center button_frame in the empty space to the right of the image

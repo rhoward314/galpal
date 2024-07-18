@@ -56,14 +56,31 @@ def update_gal(gui_obj, gal_obj, link_df, desc_df):
     gal_obj.morph_type = desc_df[' classification'][gal_obj.number]
     gui_obj.url = link_df['link'][gal_obj.number]  # should the link be part of the galaxy class?
 
+# check if user selection of spiral or elliptical is correct
+def is_correct(gal_obj):
+    if gal_obj.choice == gal_obj.morph_type:
+        return 'That is correct!'
+    else:
+        return 'That is incorrect.'
+
 # make button function
-def spiral_func(galaxy_obj):
+def spiral_func(gui_obj,gal_objs,info_label):
+    galaxy_obj = gal_objs[gui_obj.which_gal]
+    #print('you selected spiral')
     galaxy_obj.choice = 'spiral'
+    label_text = 'You selected spiral. ' + is_correct(galaxy_obj)
+    info_label.configure(text=label_text)
+    #print(galaxy_obj.name)
+    #print(galaxy_obj.choice)
 
-def elliptical_func(galaxy_obj):
+def elliptical_func(gui_obj,gal_objs,info_label):
+    galaxy_obj = gal_objs[gui_obj.which_gal]
+    #print('you selected elliptical')
     galaxy_obj.choice = 'elliptical'
+    info_label.configure(text='You selected elliptical.')
 
-def prev_gal(gui_obj, gal_objs, link_df, desc_df, image_label):
+def prev_gal(gui_obj, gal_objs, link_df, desc_df, image_label,info_label):
+    info_label.configure(text='')
     if gui_obj.which_gal > 0:
         gui_obj.which_gal -= 1
     else:
@@ -73,14 +90,16 @@ def prev_gal(gui_obj, gal_objs, link_df, desc_df, image_label):
     image_label.configure(image=new_image)
     image_label.image = new_image
 
-def rand_gal(gui_obj, gal_objs, link_df, desc_df, image_label):
+def rand_gal(gui_obj, gal_objs, link_df, desc_df, image_label,info_label):
+    info_label.configure(text='')
     gui_obj.which_gal = np.random.randint(0, len(gal_objs))
     update_gal(gui_obj, gal_objs[gui_obj.which_gal], link_df, desc_df)
     new_image = prepare_image(gui_obj.url)
     image_label.configure(image=new_image)
     image_label.image = new_image
 
-def next_gal(gui_obj, gal_objs, link_df, desc_df, image_label):
+def next_gal(gui_obj, gal_objs, link_df, desc_df, image_label,info_label):
+    info_label.configure(text='')
     if gui_obj.which_gal < len(gal_objs) - 1:
         gui_obj.which_gal += 1
     else:
@@ -133,36 +152,29 @@ def main():
     dropdown.update()
     dropdown_width, dropdown_height = dropdown.winfo_width(), dropdown.winfo_height()
     dropdown.place_forget()
-    dropdown.place(x=(margin_width - dropdown_width) / 2, y=70)
+    dropdown_y = 70
+    dropdown.place(x=(margin_width - dropdown_width) / 2, y=dropdown_y)
 
-    # spiral/elliptical buttons
-    button_frame = tk.Frame(root)#, bg='green')
-    spi_ell_pady = 5
-
-    spiral_button = tk.Button(button_frame, text='Spiral', command=partial(spiral_func, gal_objs[gui_obj.which_gal]))
-    spiral_button.grid(row=0, column=0, pady=spi_ell_pady)
-
-    elliptical_button = tk.Button(button_frame, text='Elliptical', command=partial(elliptical_func, gal_objs[gui_obj.which_gal]))
-    elliptical_button.grid(row=1, column=0, pady=spi_ell_pady)
-
-    # get width of button_frame, then use that to center button_frame in the empty space to the right of the image
-    button_frame.place(x=0, y=0)
-    button_frame.update()
-    button_frame_width, button_frame_height = button_frame.winfo_width(), button_frame.winfo_height()
-    button_frame.place_forget()
-    button_frame.place(x=root_width - margin_width + (margin_width - button_frame_width) / 2, y=70)
+    # create label for info box
+    info_label = tk.Label(root,text='',width=25,wraplength=200)
+    info_label.place(x=0,y=0)
+    info_label_width = info_label.winfo_width()
+    #info_label.place_forget()
+    #info_label_x = (margin_width - info_label_width)/2
+    info_label_y = dropdown_y + dropdown_height + 250
+    info_label.place(x=15,y=info_label_y)
 
     # next/previous/random buttons
     npr_frame = tk.Frame(root)
     npr_padx = 3
 
-    prev_button = tk.Button(npr_frame, text='Previous', command=partial(prev_gal, gui_obj, gal_objs, link_df, desc_df, image_label))
+    prev_button = tk.Button(npr_frame, text='Previous', command=partial(prev_gal, gui_obj, gal_objs, link_df, desc_df, image_label,info_label))
     prev_button.grid(row=0, column=0, padx = npr_padx)
 
-    rand_button = tk.Button(npr_frame, text='Random', command=partial(rand_gal, gui_obj, gal_objs, link_df, desc_df, image_label))
+    rand_button = tk.Button(npr_frame, text='Random', command=partial(rand_gal, gui_obj, gal_objs, link_df, desc_df, image_label,info_label))
     rand_button.grid(row=0, column=1, padx = npr_padx)
 
-    next_button = tk.Button(npr_frame, text='Next', command=partial(next_gal, gui_obj, gal_objs, link_df, desc_df, image_label))
+    next_button = tk.Button(npr_frame, text='Next', command=partial(next_gal, gui_obj, gal_objs, link_df, desc_df, image_label,info_label))
     next_button.grid(row=0, column=2, padx = npr_padx)
 
     # center next/prev/rand button frame below galaxy image
@@ -174,12 +186,31 @@ def main():
     npr_frame.place(x=(root_width - npr_frame_width) / 2,
                     y=image_label_y_offset + image_label_height + (bottom_margin_height - npr_frame_height)/4)
     
-    print('created buttons')
+    # spiral/elliptical buttons
+    button_frame = tk.Frame(root)#, bg='green')
+    spi_ell_pady = 5
+
+    spiral_button = tk.Button(button_frame, text='Spiral', command=partial(spiral_func, gui_obj,gal_objs,info_label))
+    spiral_button.grid(row=0, column=0, pady=spi_ell_pady)
+
+    elliptical_button = tk.Button(button_frame, text='Elliptical', command=partial(elliptical_func, gui_obj,gal_objs,info_label))
+    elliptical_button.grid(row=1, column=0, pady=spi_ell_pady)
+
+    # get width of button_frame, then use that to center button_frame in the empty space to the right of the image
+    button_frame.place(x=0, y=0)
+    button_frame.update()
+    button_frame_width, button_frame_height = button_frame.winfo_width(), button_frame.winfo_height()
+    button_frame.place_forget()
+    button_frame.place(x=root_width - margin_width + (margin_width - button_frame_width) / 2, y=70)
+    
+    #print('created buttons')
 
     # keeps gui window open until you close it
     root.mainloop()
 
-    print(gal_objs[gui_obj.which_gal].choice)
+    #print(gui_obj.which_gal)
+
+    #print(gal_objs[gui_obj.which_gal].choice)
 
 if __name__ == '__main__':
     main()

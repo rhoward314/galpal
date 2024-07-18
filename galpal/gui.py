@@ -65,18 +65,17 @@ def update_gal(gui_obj, gal_obj, link_df, desc_df):
 
 def get_info_text(gal_obj):
     # spiral text
-    print(gal_obj.morph_type == 'spiral')
     if gal_obj.morph_type == 'spiral':
-        info_text = str(gal_obj.name) + ' is a spiral galaxy!'
-        info_text += 'It is located ' + str(gal_obj.distance) +' light years away in the ' + str(gal_obj.constellation)+'.'
-        info_text += 'It has a stellar mass that is ' + str(gal_obj.stellar_mass) + ' times greater than our sun.'
-        info_text += 'This is a star-forming galaxy with a star-formation rate of roughly ' + str(gal_obj.star_formation) +' solar masses per year!'
+        info_text = str(gal_obj.name) + ' is a spiral galaxy! '
+        info_text += 'It is located ' + str(gal_obj.distance) +' light years away in the ' + str(gal_obj.constellation)+'. '
+        info_text += 'It has a stellar mass that is ' + str(gal_obj.stellar_mass) + ' times greater than our sun. '
+        info_text += 'This is a star-forming galaxy with a star-formation rate of roughly ' + str(gal_obj.star_formation) +' solar masses per year! '
         info_text += 'For comparison, the Milky Way forms stars at a rate of roughly one solar mass per year.'
     # elliptical text
     elif gal_obj.morph_type == 'elliptical':
-        info_text = str(gal_obj.name) + 'is an elliptical galaxy!'
-        info_text += 'It is located ' +str(gal_obj.distance) + ' light years away in the ' + str(gal_obj.constellation)+'.'
-        info_text += 'It has a stellar mass that is ' + str(gal_obj.stellar_mass) + 'times greater than our sun.'
+        info_text = str(gal_obj.name) + 'is an elliptical galaxy! '
+        info_text += 'It is located ' +str(gal_obj.distance) + ' light years away in the ' + str(gal_obj.constellation)+'. '
+        info_text += 'It has a stellar mass that is ' + str(gal_obj.stellar_mass) + 'times greater than our sun. '
         info_text += 'It contains an old stellar population, and it is not actively forming stars.'
     else:
         info_text = gal_obj.morph_type
@@ -198,7 +197,7 @@ def main():
     info_label_width = info_label.winfo_width()
     #info_label.place_forget()
     #info_label_x = (margin_width - info_label_width)/2
-    info_label_y = dropdown_y + dropdown_height + 250
+    info_label_y = dropdown_y + dropdown_height + 200
     info_label.place(x=15,y=info_label_y)
 
     # create label for score

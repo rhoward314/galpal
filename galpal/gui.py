@@ -115,7 +115,7 @@ def elliptical_func(gui_obj,gal_objs,info_label,score_label):
     label_text += get_info_text(galaxy_obj)
     info_label.configure(text=label_text)
 
-def prev_gal(gui_obj, gal_objs, link_df, desc_df, image_label,info_label):
+def prev_gal(gui_obj, gal_objs, link_df, desc_df, image_label, info_label, galaxy_option, options):
     info_label.configure(text='')
     if gui_obj.which_gal > 0:
         gui_obj.which_gal -= 1
@@ -125,8 +125,9 @@ def prev_gal(gui_obj, gal_objs, link_df, desc_df, image_label,info_label):
     new_image = prepare_image(gui_obj.url)
     image_label.configure(image=new_image)
     image_label.image = new_image
+    galaxy_option.set(options[gui_obj.which_gal])
 
-def rand_gal(gui_obj, gal_objs, link_df, desc_df, image_label,info_label):
+def rand_gal(gui_obj, gal_objs, link_df, desc_df, image_label, info_label, galaxy_option, options):
     info_label.configure(text='')
     which_gal_old = gui_obj.which_gal
     while gui_obj.which_gal == which_gal_old:
@@ -135,13 +136,29 @@ def rand_gal(gui_obj, gal_objs, link_df, desc_df, image_label,info_label):
     new_image = prepare_image(gui_obj.url)
     image_label.configure(image=new_image)
     image_label.image = new_image
+    galaxy_option.set(options[gui_obj.which_gal])
 
-def next_gal(gui_obj, gal_objs, link_df, desc_df, image_label,info_label):
+def next_gal(gui_obj, gal_objs, link_df, desc_df, image_label, info_label, galaxy_option, options):
     info_label.configure(text='')
     if gui_obj.which_gal < len(gal_objs) - 1:
         gui_obj.which_gal += 1
     else:
         gui_obj.which_gal = 0
+    update_gal(gui_obj, gal_objs[gui_obj.which_gal], link_df, desc_df)
+    new_image = prepare_image(gui_obj.url)
+    image_label.configure(image=new_image)
+    image_label.image = new_image
+    galaxy_option.set(options[gui_obj.which_gal])
+
+def dropdown_select_gal(selection,gui_obj, gal_objs, link_df, desc_df, image_label):
+    #info_label.configure(text='')  <-- this will only work if dropdown menu is set up after the info box
+    # but right now dropdown menu is set up first and info box placement depends on dropdown placement
+    # this could be changed but i'm not going to do it now
+    print(selection)
+    sel_list = selection.split()
+    print(sel_list)
+    gui_obj.which_gal = int(sel_list[-1])-1
+    print(gui_obj.which_gal)
     update_gal(gui_obj, gal_objs[gui_obj.which_gal], link_df, desc_df)
     new_image = prepare_image(gui_obj.url)
     image_label.configure(image=new_image)
@@ -183,7 +200,7 @@ def main():
     galaxy_option = tk.StringVar(root)
     galaxy_option.set(options[0])
 
-    dropdown = tk.OptionMenu(root, galaxy_option, *options)
+    dropdown = tk.OptionMenu(root, galaxy_option, *options, command = partial(dropdown_select_gal,gui_obj=gui_obj, gal_objs=gal_objs, link_df=link_df, desc_df=desc_df, image_label=image_label))
     dropdown.place(x=0, y=0)
     dropdown.update()
     dropdown_width, dropdown_height = dropdown.winfo_width(), dropdown.winfo_height()
@@ -209,13 +226,13 @@ def main():
     npr_frame = tk.Frame(root)
     npr_padx = 3
 
-    prev_button = tk.Button(npr_frame, text='Previous', command=partial(prev_gal, gui_obj, gal_objs, link_df, desc_df, image_label,info_label))
+    prev_button = tk.Button(npr_frame, text='Previous', command=partial(prev_gal, gui_obj, gal_objs, link_df, desc_df, image_label,info_label,galaxy_option,options))
     prev_button.grid(row=0, column=0, padx = npr_padx)
 
-    rand_button = tk.Button(npr_frame, text='Random', command=partial(rand_gal, gui_obj, gal_objs, link_df, desc_df, image_label,info_label))
+    rand_button = tk.Button(npr_frame, text='Random', command=partial(rand_gal, gui_obj, gal_objs, link_df, desc_df, image_label,info_label,galaxy_option,options))
     rand_button.grid(row=0, column=1, padx = npr_padx)
 
-    next_button = tk.Button(npr_frame, text='Next', command=partial(next_gal, gui_obj, gal_objs, link_df, desc_df, image_label,info_label))
+    next_button = tk.Button(npr_frame, text='Next', command=partial(next_gal, gui_obj, gal_objs, link_df, desc_df, image_label,info_label,galaxy_option,options))
     next_button.grid(row=0, column=2, padx = npr_padx)
 
     # center next/prev/rand button frame below galaxy image

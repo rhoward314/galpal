@@ -78,6 +78,23 @@ def spiral_func(galaxy_obj):
 def elliptical_func(galaxy_obj):
     galaxy_obj.choice = 'elliptical'
 
+def prev_gal(gui_obj,gal_objs,link_df,desc_df,image_label):
+    if gui_obj.which_gal > 0:
+        gui_obj.which_gal -= 1
+    else:
+        gui_obj.which_gal = len(gal_objs)-1
+    update_gal(gui_obj,gal_objs[gui_obj.which_gal],link_df,desc_df)
+    new_image = prepare_image(gui_obj.url)
+    image_label.configure(image=new_image)
+    image_label.image = new_image
+
+def rand_gal(gui_obj,gal_objs,link_df,desc_df,image_label):
+    gui_obj.which_gal = np.random.randint(0,len(gal_objs))
+    update_gal(gui_obj,gal_objs[gui_obj.which_gal],link_df,desc_df)
+    new_image = prepare_image(gui_obj.url)
+    image_label.configure(image=new_image)
+    image_label.image = new_image
+
 def next_gal(gui_obj,gal_objs,link_df,desc_df,image_label):
     if gui_obj.which_gal < len(gal_objs)-1:
         gui_obj.which_gal += 1
@@ -144,10 +161,10 @@ def main():
     npr_frame = tk.Frame(root)
     npr_padx = 3
 
-    prev_button = tk.Button(npr_frame, text='Previous')
+    prev_button = tk.Button(npr_frame, text='Previous',command=partial(prev_gal,gui_obj,gal_objs,link_df,desc_df,image_label))
     prev_button.grid(row=0, column=0, padx = npr_padx)
 
-    rand_button = tk.Button(npr_frame, text='Random')
+    rand_button = tk.Button(npr_frame, text='Random',command=partial(rand_gal,gui_obj,gal_objs,link_df,desc_df,image_label))
     rand_button.grid(row=0, column=1, padx = npr_padx)
 
     next_button = tk.Button(npr_frame, text='Next',command=partial(next_gal,gui_obj,gal_objs,link_df,desc_df,image_label))
@@ -161,6 +178,8 @@ def main():
     bottom_margin_height = root_height - image_label_y_offset - image_label_height
     npr_frame.place(x=(root_width - npr_frame_width) / 2,
                     y=image_label_y_offset + image_label_height + (bottom_margin_height - npr_frame_height)/4)
+    
+    print('created buttons')
 
     #dropdown menu
     dropdown(root)

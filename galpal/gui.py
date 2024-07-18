@@ -53,10 +53,36 @@ class temp_gui_class:
         self.attempts = 0
 
 def update_gal(gui_obj, gal_obj, link_df, desc_df):
+    #name, classification, distance in LY, Mass in M_sun, Constellation location, SFR (M_sun/year, if applicable)
     gal_obj.number = gui_obj.which_gal
     gal_obj.name = link_df['#name'][gal_obj.number]
     gal_obj.morph_type = desc_df[' classification'][gal_obj.number]
+    gal_obj.distance = desc_df[' distance in LY'][gal_obj.number]
+    gal_obj.stellar_mass = desc_df[' Mass in M_sun'][gal_obj.number]
+    gal_obj.constellation = desc_df[' Constellation location'][gal_obj.number]
+    gal_obj.star_formation = desc_df[' SFR (M_sun/year if applicable)'][gal_obj.number]
     gui_obj.url = link_df['link'][gal_obj.number]  # should the link be part of the galaxy class?
+
+def get_info_text(gal_obj):
+    # spiral text
+    print(gal_obj.morph_type == 'spiral')
+    if gal_obj.morph_type == 'spiral':
+        info_text = str(gal_obj.name) + ' is a spiral galaxy!'
+        info_text += 'It is located ' + str(gal_obj.distance) +' light years away in the ' + str(gal_obj.constellation)+'.'
+        info_text += 'It has a stellar mass that is ' + str(gal_obj.stellar_mass) + ' times greater than our sun.'
+        info_text += 'This is a star-forming galaxy with a star-formation rate of roughly ' + str(gal_obj.star_formation) +' solar masses per year!'
+        info_text += 'For comparison, the Milky Way forms stars at a rate of roughly one solar mass per year.'
+    # elliptical text
+    elif gal_obj.morph_type == 'elliptical':
+        info_text = str(gal_obj.name) + 'is an elliptical galaxy!'
+        info_text += 'It is located ' +str(gal_obj.distance) + ' light years away in the ' + str(gal_obj.constellation)+'.'
+        info_text += 'It has a stellar mass that is ' + str(gal_obj.stellar_mass) + 'times greater than our sun.'
+        info_text += 'It contains an old stellar population, and it is not actively forming stars.'
+    else:
+        info_text = gal_obj.morph_type
+        print(type(gal_obj.morph_type))
+    return info_text
+
 
 # check if user selection of spiral or elliptical is correct
 def is_correct(gui_obj,gal_obj,score_label):
@@ -78,12 +104,16 @@ def spiral_func(gui_obj,gal_objs,info_label,score_label):
     galaxy_obj = gal_objs[gui_obj.which_gal]
     galaxy_obj.choice = 'spiral'
     label_text = 'You selected spiral.\n' + is_correct(gui_obj,galaxy_obj,score_label)
+    label_text += '\n\n'
+    label_text += get_info_text(galaxy_obj)
     info_label.configure(text=label_text)
 
 def elliptical_func(gui_obj,gal_objs,info_label,score_label):
     galaxy_obj = gal_objs[gui_obj.which_gal]
     galaxy_obj.choice = 'elliptical'
     label_text = 'You selected elliptical.\n' + is_correct(gui_obj,galaxy_obj,score_label)
+    label_text += '\n\n'
+    label_text += get_info_text(galaxy_obj)
     info_label.configure(text=label_text)
 
 def prev_gal(gui_obj, gal_objs, link_df, desc_df, image_label,info_label):
@@ -99,7 +129,9 @@ def prev_gal(gui_obj, gal_objs, link_df, desc_df, image_label,info_label):
 
 def rand_gal(gui_obj, gal_objs, link_df, desc_df, image_label,info_label):
     info_label.configure(text='')
-    gui_obj.which_gal = np.random.randint(0, len(gal_objs))
+    which_gal_old = gui_obj.which_gal
+    while gui_obj.which_gal == which_gal_old:
+        gui_obj.which_gal = np.random.randint(0, len(gal_objs))
     update_gal(gui_obj, gal_objs[gui_obj.which_gal], link_df, desc_df)
     new_image = prepare_image(gui_obj.url)
     image_label.configure(image=new_image)
@@ -125,7 +157,7 @@ def main():
     link_df = pd.read_csv('txt_files/image_links.txt', sep='\s+')
     desc_df = pd.read_csv('txt_files/description_info.txt')
     # create list of galaxy objects so they all exist and can be modified by functions
-    gal_objs = [galaxy.Galaxy(i,0,0,0,0,0) for i in range(len(link_df['#name']))]
+    gal_objs = [galaxy.Galaxy(i,0,0,0,0,0,0) for i in range(len(link_df['#name']))]
     gui_obj = temp_gui_class(0)
     update_gal(gui_obj, gal_objs[gui_obj.which_gal], link_df, desc_df)
 

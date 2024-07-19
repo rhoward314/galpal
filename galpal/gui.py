@@ -1,12 +1,10 @@
-# this will be the place where we write the GUI class!
-
 from urllib.request import urlopen
 import tkinter as tk
 from PIL import ImageTk, Image
 import numpy as np
 import pandas as pd
 from functools import partial
-import galaxy  # delete this later when everything is set up right
+import galaxy # delete this later when everything is set up right
 
 def prepare_image(image_url):
     """Prepare-Image
@@ -21,7 +19,7 @@ def prepare_image(image_url):
     """
     # open image from link and create an image object that can be added to label in gui window
     data = urlopen(image_url) # open image from link
-    pil_image = Image.open(data) # create image object
+    pil_image = Image.open(data) # create Image object
     w_old, h_old = pil_image.size # get original image size
     # size of label box for image (square)
     box_size = 500 
@@ -37,9 +35,9 @@ def prepare_image(image_url):
     else:
         print('something is wrong with this image')
     # resize image
-    new_pil_image = pil_image.resize((w_new,h_new))
+    new_pil_image = pil_image.resize((w_new, h_new))
     tkimage = ImageTk.PhotoImage(new_pil_image)
-    # create label widget in gui with image
+    
     return tkimage
 
 class temp_gui_class:
@@ -61,7 +59,7 @@ def update_gal(gui_obj, gal_obj, link_df, desc_df):
     gal_obj.stellar_mass = desc_df[' Mass in M_sun'][gal_obj.number]
     gal_obj.constellation = desc_df[' Constellation location'][gal_obj.number]
     gal_obj.star_formation = desc_df[' SFR (M_sun/year if applicable)'][gal_obj.number]
-    gui_obj.url = link_df['link'][gal_obj.number]  # should the link be part of the galaxy class?
+    gui_obj.url = link_df['link'][gal_obj.number] # should the link be part of the galaxy class?
 
 def get_info_text(gal_obj):
     # spiral text
@@ -82,7 +80,6 @@ def get_info_text(gal_obj):
         print(type(gal_obj.morph_type))
     return info_text
 
-
 # check if user selection of spiral or elliptical is correct
 def is_correct(gui_obj, gal_obj, score_label):
     gui_obj.attempts += 1
@@ -98,7 +95,7 @@ def is_correct(gui_obj, gal_obj, score_label):
         score_label.configure(text=score_text, width=25, wraplength=200)
         return 'That is incorrect.'
 
-# make button function
+# make buttons function
 def spiral_func(gui_obj, gal_objs, info_label, score_label):
     galaxy_obj = gal_objs[gui_obj.which_gal]
     galaxy_obj.choice = 'spiral'
@@ -221,7 +218,7 @@ def setup_gui():
     score_label = tk.Label(root, text=score_text, width=25, wraplength=200)
     score_label.place(x=15, y=root_height - 90)
 
-    # next/previous/random buttons
+    # create next/previous/random buttons
     npr_frame = tk.Frame(root)
     npr_padx = 3
 
@@ -234,7 +231,7 @@ def setup_gui():
     next_button = tk.Button(npr_frame, text='Next', command=partial(next_gal, gui_obj, gal_objs, link_df, desc_df, image_label, info_label, galaxy_option, options))
     next_button.grid(row=0, column=2, padx=npr_padx)
 
-    # center next/prev/rand button frame below galaxy image
+    # center next/previous/random button frame below galaxy image
     npr_frame.place(x=0, y=0)
     npr_frame.update()
     npr_frame_width, npr_frame_height = npr_frame.winfo_width(), npr_frame.winfo_height()
@@ -243,7 +240,7 @@ def setup_gui():
     npr_frame.place(x=(root_width - npr_frame_width) / 2,
                     y=image_label_y_offset + image_label_height + (bottom_margin_height - npr_frame_height)/4)
     
-    # spiral/elliptical buttons
+    # create spiral/elliptical buttons
     button_frame = tk.Frame(root)
     spi_ell_pady = 5
 
@@ -253,7 +250,7 @@ def setup_gui():
     elliptical_button = tk.Button(button_frame, text='Elliptical', command=partial(elliptical_func, gui_obj,gal_objs,info_label,score_label))
     elliptical_button.grid(row=1, column=0, pady=spi_ell_pady)
 
-    # get width of button_frame, then use that to center button_frame in the empty space to the right of the image
+    # center button_frame in the empty space to the right of the image
     button_frame.place(x=0, y=0)
     button_frame.update()
     button_frame_width, button_frame_height = button_frame.winfo_width(), button_frame.winfo_height()

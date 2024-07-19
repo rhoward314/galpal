@@ -3,9 +3,9 @@ M51,spiral,31 million,160 billion,Canes Venatici constellation,7
 M61,spiral,55 million,70 billion,Virgo Cluster,?
 M63,spiral,27 million,140 billion,Canes Venatici constellation, ?
 M64,spiral,17 million,400 million,Coma Berenices constellation, ?
-M66,spiral,35 million,?,Leo constelltion, ?
+M66,spiral,35 million,?,Leo constellation, ?
 M60,elliptical,55 million,1 trillion,Virgo Cluster,n_a
-M84,elliptical,60 million,1.5 billion,Virgo constellationm,n_a
+M84,elliptical,60 million,1.5 billion,Virgo constellation,n_a
 M85,elliptical,60 million,400 billion,Virgo Cluster,n_a
 M87,elliptical,50 million,2 trillion,Virgo constellation,n_a
 M105,elliptical,30 million,100 billion,Leo constellation,n_a

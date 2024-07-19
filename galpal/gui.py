@@ -110,7 +110,7 @@ def is_correct(gui_obj, gal_obj, score_label):
         Args:
             gui_obj (object): Instance of temp_gui_class created for current galaxy.
             gal_obj (object): Instance of Galaxy created for current galaxy. 
-            score_label (): ???
+            score_label (tkinter.Label): Label object containing current score and number of attempts.
 
         Returns:
             (str) Text that indicates whether user choice is correct
@@ -175,10 +175,10 @@ def prev_gal(gui_obj, gal_objs, link_df, desc_df, image_label, info_label, galax
         gal_obj (object): Instance of Galaxy created for current galaxy 
         link_df (arr): Array of urls for galaxy images
         desc_df (arr): Array of galaxy attributes (Name, Morphological Type, Distance [Ly], Mass [solar masses], Constellation, SFR [solar masses/year])
-        image_label (): ???
-        info_label (tk label): Provides text for info box
-        galaxy_option (tk StringVar): Choice of galaxy from dropdown menu
-        options ():
+        image_label (tkinter.Label): Label object that contains the current galaxy image.
+        info_label (tkinter.Label): Provides text for info box
+        galaxy_option (tkinter.StringVar): Choice of galaxy from dropdown menu
+        options (list): List of strings ('Galaxy 1', 'Galaxy 2', 'Galaxy 3', etc.) to populate dropdown menu.
 
     Returns:
         None
@@ -202,10 +202,10 @@ def rand_gal(gui_obj, gal_objs, link_df, desc_df, image_label, info_label, galax
         gal_obj (object): Instance of Galaxy created for current galaxy 
         link_df (arr): Array of urls for galaxy images
         desc_df (arr): Array of galaxy attributes (Name, Morphological Type, Distance [Ly], Mass [solar masses], Constellation, SFR [solar masses/year])
-        image_label (): ???
-        info_label (tk label): Provides text for info box
-        galaxy_option (tk StringVar): Choice of galaxy from dropdown menu
-        options ():
+        image_label (tkinter.Label): Label object that contains the current galaxy image.
+        info_label (tkinter.Label): Provides text for info box
+        galaxy_option (tkinter.StringVar): Choice of galaxy from dropdown menu
+        options (list): List of strings ('Galaxy 1', 'Galaxy 2', 'Galaxy 3', etc.) to populate dropdown menu.
 
     Returns:
         None
@@ -228,10 +228,10 @@ def next_gal(gui_obj, gal_objs, link_df, desc_df, image_label, info_label, galax
         gal_obj (object): Instance of Galaxy created for current galaxy 
         link_df (arr): Array of urls for galaxy images
         desc_df (arr): Array of galaxy attributes (Name, Morphological Type, Distance [Ly], Mass [solar masses], Constellation, SFR [solar masses/year])
-        image_label (): ???
-        info_label (tk label): Provides text for info box
-        galaxy_option (tk StringVar): Choice of galaxy from dropdown menu
-        options ():
+        image_label (tkinter.Label): Label object that contains the current galaxy image.
+        info_label (tkinter.Label): Provides text for info box
+        galaxy_option (tkinter.StringVar): Choice of galaxy from dropdown menu
+        options (list): List of strings ('Galaxy 1', 'Galaxy 2', 'Galaxy 3', etc.) to populate dropdown menu.
 
     Returns:
         None

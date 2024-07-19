@@ -94,7 +94,7 @@ def get_info_text(gal_obj):
         info_text += 'For comparison, the Milky Way forms stars at a rate of roughly one solar mass per year.'
     # elliptical text
     elif gal_obj.morph_type == 'elliptical':
-        info_text = str(gal_obj.name) + 'is an elliptical galaxy! '
+        info_text = str(gal_obj.name) + ' is an elliptical galaxy! '
         info_text += 'It is located ' + str(gal_obj.distance) + ' light years away in the ' + str(gal_obj.constellation) + '. '
         info_text += 'It has a stellar mass that is ' + str(gal_obj.stellar_mass) + 'times greater than our sun. '
         info_text += 'It contains an old stellar population, and it is not actively forming stars.'

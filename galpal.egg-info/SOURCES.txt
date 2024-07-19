@@ -1,0 +1,12 @@
+LICENSE
+README.md
+pyproject.toml
+galpal/__init__.py
+galpal/galaxy.py
+galpal/gui.py
+galpal/main.py
+galpal.egg-info/PKG-INFO
+galpal.egg-info/SOURCES.txt
+galpal.egg-info/dependency_links.txt
+galpal.egg-info/requires.txt
+galpal.egg-info/top_level.txt

@@ -4,7 +4,7 @@ from PIL import ImageTk, Image
 import numpy as np
 import pandas as pd
 from functools import partial
-import galaxy # delete this later when everything is set up right
+from galpal import galaxy # delete this later when everything is set up right
 
 def prepare_image(image_url):
     """Prepare-Image

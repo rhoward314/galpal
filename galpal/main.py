@@ -1,5 +1,5 @@
-import gui
-import galaxy
+from galpal import gui
+from galpal import galaxy
 
 def main():
 	gui.setup_gui()

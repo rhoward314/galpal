@@ -53,6 +53,19 @@ class Gui:
         pass
 
 def update_gal(gui_obj, gal_obj, link_df, desc_df):
+    """Update Galaxy
+
+    Updates the attributes for an instance of Galaxy with relevant information.
+
+    Args:
+        gui_obj (object): Instance of temp_gui_class created for current galaxy.
+        gal_obj (object): Instance of Galaxy created for current galaxy.
+        link_df (arr): Array of urls for galaxy images.
+        desc_df (arr): Array of galaxy attributes (Name, Morphological Type, Distance [Ly], Mass [solar masses], Constellation, SFR [solar masses/year]).
+
+    Returns:
+        None
+    """
     #name, classification, distance in LY, Mass in M_sun, Constellation location, SFR (M_sun/year, if applicable)
     gal_obj.number = gui_obj.current_gal
     gal_obj.name = link_df['#name'][gal_obj.number]
@@ -64,6 +77,14 @@ def update_gal(gui_obj, gal_obj, link_df, desc_df):
     gal_obj.url = link_df['link'][gal_obj.number]
 
 def get_info_text(gal_obj):
+    """Generates text explaining features of the galaxy that will be displayed in the GUI.
+
+    Args:
+        gal_obj (object): Instance of Galaxy created for current galaxy.
+
+    Returns:
+        (str) Informational text
+    """
     # spiral text
     if gal_obj.morph_type == 'spiral':
         info_text = str(gal_obj.name) + ' is a spiral galaxy! '
@@ -84,6 +105,16 @@ def get_info_text(gal_obj):
 
 # check if user selection of spiral or elliptical is correct
 def is_correct(gui_obj, gal_obj, score_label):
+    """Checks if the user selected galaxy classification is correct and updates score.
+
+        Args:
+            gui_obj (object): Instance of temp_gui_class created for current galaxy.
+            gal_obj (object): Instance of Galaxy created for current galaxy. 
+            score_label (): ???
+
+        Returns:
+            (str) Text that indicates whether user choice is correct
+    """
     gui_obj.attempts += 1
     if gal_obj.choice == gal_obj.morph_type:
         gal_obj.grade = 1
@@ -99,6 +130,17 @@ def is_correct(gui_obj, gal_obj, score_label):
 
 # make buttons function
 def spiral_func(gui_obj, gal_objs, info_label, score_label):
+    """Button that allows user to select 'Spiral' as a galaxy type.
+
+        Args:
+            gui_obj (object): Instance of temp_gui_class created for current galaxy.
+            gal_obj (object): Instance of Galaxy created for current galaxy. 
+            info_label (): tk label that provides text for info box.
+            score_label (): tk label that provides text for score box.
+
+        Returns:
+            None
+    """
     galaxy_obj = gal_objs[gui_obj.current_gal]
     galaxy_obj.choice = 'spiral'
     label_text = 'You selected spiral.\n' + is_correct(gui_obj, galaxy_obj, score_label)
@@ -107,6 +149,17 @@ def spiral_func(gui_obj, gal_objs, info_label, score_label):
     info_label.configure(text=label_text)
 
 def elliptical_func(gui_obj, gal_objs, info_label, score_label):
+    """Button that allows user to select 'Elliptical' as a galaxy type.
+
+    Args:
+        gui_obj (object): Instance of temp_gui_class created for current galaxy.
+        gal_obj (object): Instance of Galaxy created for current galaxy. 
+        info_label (tk label): Provides text for info box.
+        score_label (tk label): Provides text for score box.
+
+    Returns:
+        None
+    """
     galaxy_obj = gal_objs[gui_obj.current_gal]
     galaxy_obj.choice = 'elliptical'
     label_text = 'You selected elliptical.\n' + is_correct(gui_obj, galaxy_obj, score_label)
@@ -115,6 +168,21 @@ def elliptical_func(gui_obj, gal_objs, info_label, score_label):
     info_label.configure(text=label_text)
 
 def prev_gal(gui_obj, gal_objs, link_df, desc_df, image_label, info_label, galaxy_option, options):
+    """Button that allows user to return to the previous galaxy image.
+
+    Args:
+        gui_obj (object): Instance of temp_gui_class created for current galaxy
+        gal_obj (object): Instance of Galaxy created for current galaxy 
+        link_df (arr): Array of urls for galaxy images
+        desc_df (arr): Array of galaxy attributes (Name, Morphological Type, Distance [Ly], Mass [solar masses], Constellation, SFR [solar masses/year])
+        image_label (): ???
+        info_label (tk label): Provides text for info box
+        galaxy_option (tk StringVar): Choice of galaxy from dropdown menu
+        options ():
+
+    Returns:
+        None
+    """
     info_label.configure(text='')
     if gui_obj.current_gal > 0:
         gui_obj.current_gal -= 1
@@ -127,6 +195,21 @@ def prev_gal(gui_obj, gal_objs, link_df, desc_df, image_label, info_label, galax
     galaxy_option.set(options[gui_obj.current_gal])
 
 def rand_gal(gui_obj, gal_objs, link_df, desc_df, image_label, info_label, galaxy_option, options):
+    """Button that allows user to load a random galaxy image.
+
+    Args:
+        gui_obj (object): Instance of temp_gui_class created for current galaxy
+        gal_obj (object): Instance of Galaxy created for current galaxy 
+        link_df (arr): Array of urls for galaxy images
+        desc_df (arr): Array of galaxy attributes (Name, Morphological Type, Distance [Ly], Mass [solar masses], Constellation, SFR [solar masses/year])
+        image_label (): ???
+        info_label (tk label): Provides text for info box
+        galaxy_option (tk StringVar): Choice of galaxy from dropdown menu
+        options ():
+
+    Returns:
+        None
+    """
     info_label.configure(text='')
     current_gal_old = gui_obj.current_gal
     while gui_obj.current_gal == current_gal_old:
@@ -138,6 +221,21 @@ def rand_gal(gui_obj, gal_objs, link_df, desc_df, image_label, info_label, galax
     galaxy_option.set(options[gui_obj.current_gal])
 
 def next_gal(gui_obj, gal_objs, link_df, desc_df, image_label, info_label, galaxy_option, options):
+    """Button that allows user to proceed to the next galaxy image.
+
+    Args:
+        gui_obj (object): Instance of temp_gui_class created for current galaxy
+        gal_obj (object): Instance of Galaxy created for current galaxy 
+        link_df (arr): Array of urls for galaxy images
+        desc_df (arr): Array of galaxy attributes (Name, Morphological Type, Distance [Ly], Mass [solar masses], Constellation, SFR [solar masses/year])
+        image_label (): ???
+        info_label (tk label): Provides text for info box
+        galaxy_option (tk StringVar): Choice of galaxy from dropdown menu
+        options ():
+
+    Returns:
+        None
+    """
     info_label.configure(text='')
     if gui_obj.current_gal < len(gal_objs) - 1:
         gui_obj.current_gal += 1

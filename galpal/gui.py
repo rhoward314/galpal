@@ -41,7 +41,7 @@ def prepare_image(image_url):
     return tkimage
 
 class temp_gui_class:
-    def __init__(self, current_gal, url=0):
+    def __init__(self, current_gal):
         # current_gal and url need to be attributes of an object to update with buttons
         # using this for now just to get buttons working
         self.current_gal = current_gal
@@ -96,7 +96,7 @@ def get_info_text(gal_obj):
     elif gal_obj.morph_type == 'elliptical':
         info_text = str(gal_obj.name) + ' is an elliptical galaxy! '
         info_text += 'It is located ' + str(gal_obj.distance) + ' light years away in the ' + str(gal_obj.constellation) + '. '
-        info_text += 'It has a stellar mass that is ' + str(gal_obj.stellar_mass) + 'times greater than our sun. '
+        info_text += 'It has a stellar mass that is ' + str(gal_obj.stellar_mass) + ' times greater than our sun. '
         info_text += 'It contains an old stellar population, and it is not actively forming stars.'
     else:
         info_text = gal_obj.morph_type
@@ -135,8 +135,8 @@ def spiral_func(gui_obj, gal_objs, info_label, score_label):
         Args:
             gui_obj (object): Instance of temp_gui_class created for current galaxy.
             gal_obj (object): Instance of Galaxy created for current galaxy. 
-            info_label (): tk label that provides text for info box.
-            score_label (): tk label that provides text for score box.
+            info_label (tkinter.Label): Provides text for info box.
+            score_label (tkinter.Label): Provides text for score box.
 
         Returns:
             None
@@ -154,8 +154,8 @@ def elliptical_func(gui_obj, gal_objs, info_label, score_label):
     Args:
         gui_obj (object): Instance of temp_gui_class created for current galaxy.
         gal_obj (object): Instance of Galaxy created for current galaxy. 
-        info_label (tk label): Provides text for info box.
-        score_label (tk label): Provides text for score box.
+        info_label (tkinter.Label): Provides text for info box.
+        score_label (tkinter.Label): Provides text for score box.
 
     Returns:
         None

@@ -41,25 +41,27 @@ def prepare_image(image_url):
     return tkimage
 
 class temp_gui_class:
-    def __init__(self, which_gal, url=0):
-        # which_gal and url need to be attributes of an object to update with buttons
-        # url should go in galaxy class, not sure where which_gal will go
+    def __init__(self, current_gal, url=0):
+        # current_gal and url need to be attributes of an object to update with buttons
         # using this for now just to get buttons working
-        self.which_gal = which_gal
-        self.url = url
+        self.current_gal = current_gal
         self.grade = 0
         self.attempts = 0
 
+class Gui:
+    def __init__(self):
+        pass
+
 def update_gal(gui_obj, gal_obj, link_df, desc_df):
     #name, classification, distance in LY, Mass in M_sun, Constellation location, SFR (M_sun/year, if applicable)
-    gal_obj.number = gui_obj.which_gal
+    gal_obj.number = gui_obj.current_gal
     gal_obj.name = link_df['#name'][gal_obj.number]
-    gal_obj.morph_type = desc_df[' classification'][gal_obj.number]
-    gal_obj.distance = desc_df[' distance in LY'][gal_obj.number]
-    gal_obj.stellar_mass = desc_df[' Mass in M_sun'][gal_obj.number]
-    gal_obj.constellation = desc_df[' Constellation location'][gal_obj.number]
-    gal_obj.star_formation = desc_df[' SFR (M_sun/year if applicable)'][gal_obj.number]
-    gui_obj.url = link_df['link'][gal_obj.number] # should the link be part of the galaxy class?
+    gal_obj.morph_type = desc_df['classification'][gal_obj.number]
+    gal_obj.distance = desc_df['distance in LY'][gal_obj.number]
+    gal_obj.stellar_mass = desc_df['Mass in M_sun'][gal_obj.number]
+    gal_obj.constellation = desc_df['Constellation location'][gal_obj.number]
+    gal_obj.star_formation = desc_df['SFR (M_sun/year if applicable)'][gal_obj.number]
+    gal_obj.url = link_df['link'][gal_obj.number]
 
 def get_info_text(gal_obj):
     # spiral text
@@ -67,12 +69,12 @@ def get_info_text(gal_obj):
         info_text = str(gal_obj.name) + ' is a spiral galaxy! '
         info_text += 'It is located ' + str(gal_obj.distance) + ' light years away in the ' + str(gal_obj.constellation) + '. '
         info_text += 'It has a stellar mass that is ' + str(gal_obj.stellar_mass) + ' times greater than our sun. '
-        info_text += 'This is a star-forming galaxy with a star-formation rate of roughly ' + str(gal_obj.star_formation) + ' solar masses per year! '
+        info_text += 'This is a star-forming galaxy with a star formation rate of roughly ' + str(gal_obj.star_formation) + ' solar masses per year! '
         info_text += 'For comparison, the Milky Way forms stars at a rate of roughly one solar mass per year.'
     # elliptical text
     elif gal_obj.morph_type == 'elliptical':
         info_text = str(gal_obj.name) + 'is an elliptical galaxy! '
-        info_text += 'It is located ' +str(gal_obj.distance) + ' light years away in the ' + str(gal_obj.constellation) + '. '
+        info_text += 'It is located ' + str(gal_obj.distance) + ' light years away in the ' + str(gal_obj.constellation) + '. '
         info_text += 'It has a stellar mass that is ' + str(gal_obj.stellar_mass) + 'times greater than our sun. '
         info_text += 'It contains an old stellar population, and it is not actively forming stars.'
     else:
@@ -87,17 +89,17 @@ def is_correct(gui_obj, gal_obj, score_label):
         gal_obj.grade = 1
         gui_obj.grade += 1
         score_text = str(gui_obj.grade) + ' correct out of ' + str(gui_obj.attempts) + ' attempts.'
-        score_label.configure(text=score_text, width=25, wraplength=200)
+        score_label.configure(text=score_text)
         return 'That is correct!'
     else:
         gal_obj.grade = 0
         score_text = str(gui_obj.grade) + ' correct out of ' + str(gui_obj.attempts) + ' attempts.'
-        score_label.configure(text=score_text, width=25, wraplength=200)
+        score_label.configure(text=score_text)
         return 'That is incorrect.'
 
 # make buttons function
 def spiral_func(gui_obj, gal_objs, info_label, score_label):
-    galaxy_obj = gal_objs[gui_obj.which_gal]
+    galaxy_obj = gal_objs[gui_obj.current_gal]
     galaxy_obj.choice = 'spiral'
     label_text = 'You selected spiral.\n' + is_correct(gui_obj, galaxy_obj, score_label)
     label_text += '\n\n'
@@ -105,7 +107,7 @@ def spiral_func(gui_obj, gal_objs, info_label, score_label):
     info_label.configure(text=label_text)
 
 def elliptical_func(gui_obj, gal_objs, info_label, score_label):
-    galaxy_obj = gal_objs[gui_obj.which_gal]
+    galaxy_obj = gal_objs[gui_obj.current_gal]
     galaxy_obj.choice = 'elliptical'
     label_text = 'You selected elliptical.\n' + is_correct(gui_obj, galaxy_obj, score_label)
     label_text += '\n\n'
@@ -114,50 +116,50 @@ def elliptical_func(gui_obj, gal_objs, info_label, score_label):
 
 def prev_gal(gui_obj, gal_objs, link_df, desc_df, image_label, info_label, galaxy_option, options):
     info_label.configure(text='')
-    if gui_obj.which_gal > 0:
-        gui_obj.which_gal -= 1
+    if gui_obj.current_gal > 0:
+        gui_obj.current_gal -= 1
     else:
-        gui_obj.which_gal = len(gal_objs) - 1
-    update_gal(gui_obj, gal_objs[gui_obj.which_gal], link_df, desc_df)
-    new_image = prepare_image(gui_obj.url)
+        gui_obj.current_gal = len(gal_objs) - 1
+    update_gal(gui_obj, gal_objs[gui_obj.current_gal], link_df, desc_df)
+    new_image = prepare_image(gal_objs[gui_obj.current_gal].url)
     image_label.configure(image=new_image)
     image_label.image = new_image
-    galaxy_option.set(options[gui_obj.which_gal])
+    galaxy_option.set(options[gui_obj.current_gal])
 
 def rand_gal(gui_obj, gal_objs, link_df, desc_df, image_label, info_label, galaxy_option, options):
     info_label.configure(text='')
-    which_gal_old = gui_obj.which_gal
-    while gui_obj.which_gal == which_gal_old:
-        gui_obj.which_gal = np.random.randint(0, len(gal_objs))
-    update_gal(gui_obj, gal_objs[gui_obj.which_gal], link_df, desc_df)
-    new_image = prepare_image(gui_obj.url)
+    current_gal_old = gui_obj.current_gal
+    while gui_obj.current_gal == current_gal_old:
+        gui_obj.current_gal = np.random.randint(0, len(gal_objs))
+    update_gal(gui_obj, gal_objs[gui_obj.current_gal], link_df, desc_df)
+    new_image = prepare_image(gal_objs[gui_obj.current_gal].url)
     image_label.configure(image=new_image)
     image_label.image = new_image
-    galaxy_option.set(options[gui_obj.which_gal])
+    galaxy_option.set(options[gui_obj.current_gal])
 
 def next_gal(gui_obj, gal_objs, link_df, desc_df, image_label, info_label, galaxy_option, options):
     info_label.configure(text='')
-    if gui_obj.which_gal < len(gal_objs) - 1:
-        gui_obj.which_gal += 1
+    if gui_obj.current_gal < len(gal_objs) - 1:
+        gui_obj.current_gal += 1
     else:
-        gui_obj.which_gal = 0
-    update_gal(gui_obj, gal_objs[gui_obj.which_gal], link_df, desc_df)
-    new_image = prepare_image(gui_obj.url)
+        gui_obj.current_gal = 0
+    update_gal(gui_obj, gal_objs[gui_obj.current_gal], link_df, desc_df)
+    new_image = prepare_image(gal_objs[gui_obj.current_gal].url)
     image_label.configure(image=new_image)
     image_label.image = new_image
-    galaxy_option.set(options[gui_obj.which_gal])
+    galaxy_option.set(options[gui_obj.current_gal])
 
 def dropdown_select_gal(selection, gui_obj, gal_objs, link_df, desc_df, image_label):
     #info_label.configure(text='')  <-- this will only work if dropdown menu is set up after the info box
     # but right now dropdown menu is set up first and info box placement depends on dropdown placement
     # this could be changed but i'm not going to do it now
-    print(selection)
+    # print(selection)
     sel_list = selection.split()
-    print(sel_list)
-    gui_obj.which_gal = int(sel_list[-1]) - 1
-    print(gui_obj.which_gal)
-    update_gal(gui_obj, gal_objs[gui_obj.which_gal], link_df, desc_df)
-    new_image = prepare_image(gui_obj.url)
+    # print(sel_list)
+    gui_obj.current_gal = int(sel_list[-1]) - 1
+    # print(gui_obj.current_gal)
+    update_gal(gui_obj, gal_objs[gui_obj.current_gal], link_df, desc_df)
+    new_image = prepare_image(gal_objs[gui_obj.current_gal].url)
     image_label.configure(image=new_image)
     image_label.image = new_image
 
@@ -169,9 +171,9 @@ def setup_gui():
     link_df = pd.read_csv('txt_files/image_links.txt', sep='\s+')
     desc_df = pd.read_csv('txt_files/description_info.txt')
     # create list of galaxy objects so they all exist and can be modified by functions
-    gal_objs = [galaxy.Galaxy(i,0,0,0,0,0,0) for i in range(len(link_df['#name']))]
+    gal_objs = [galaxy.Galaxy(i,0,0,0,0,0,0,0) for i in range(len(link_df['#name']))]
     gui_obj = temp_gui_class(0)
-    update_gal(gui_obj, gal_objs[gui_obj.which_gal], link_df, desc_df)
+    update_gal(gui_obj, gal_objs[gui_obj.current_gal], link_df, desc_df)
 
     root = tk.Tk() # create a GUI window
     root.title('Gal Pal Galaxy Classification') # set title for window
@@ -187,7 +189,7 @@ def setup_gui():
     margin_width = (root_width - image_label_width) / 2
     image_label = tk.Label(root, width=image_label_width, height=image_label_height, bg='lightgray')
     image_label.place(x=margin_width, y=image_label_y_offset)
-    image1 = prepare_image(gui_obj.url)
+    image1 = prepare_image(gal_objs[gui_obj.current_gal].url)
     image_label.configure(image=image1)
 
     # dropdown menu
@@ -205,18 +207,25 @@ def setup_gui():
     dropdown.place(x=(margin_width - dropdown_width) / 2, y=dropdown_y)
 
     # create label for info box
-    info_label = tk.Label(root,text='', width=25, wraplength=200)
+    info_label = tk.Label(root,text=' ', width=35, wraplength=200)
     info_label.place(x=0, y=0)
-    info_label_width = info_label.winfo_width()
-    #info_label.place_forget()
-    #info_label_x = (margin_width - info_label_width)/2
-    info_label_y = dropdown_y + dropdown_height + 200
-    info_label.place(x=15, y=info_label_y)
+    root.update()
+    info_label_width, info_label_height = info_label.winfo_width(), info_label.winfo_height()
+    info_label.place_forget()
+    info_label_x = (margin_width - info_label_width) / 2
+    info_label_y = 0.45*root_height
+    info_label.place(x=info_label_x, y=info_label_y)
 
     # create label for score
     score_text = str(gui_obj.grade) + ' correct out of ' + str(gui_obj.attempts) + ' attempts.'
-    score_label = tk.Label(root, text=score_text, width=25, wraplength=200)
-    score_label.place(x=15, y=root_height - 90)
+    score_label = tk.Label(root, text=score_text, width=35, wraplength=200)
+    score_label.place(x=0, y=0)
+    root.update()
+    score_label_width, score_label_height = score_label.winfo_width(), score_label.winfo_height()
+    score_label.place_forget()
+    score_label_x = (margin_width - score_label_width) / 2
+    score_label_y = 0.8*root_height
+    score_label.place(x=score_label_x, y=score_label_y)
 
     # create next/previous/random buttons
     npr_frame = tk.Frame(root)
@@ -262,9 +271,9 @@ def setup_gui():
     # keeps gui window open until you close it
     root.mainloop()
 
-    #print(gui_obj.which_gal)
+    #print(gui_obj.current_gal)
 
-    #print(gal_objs[gui_obj.which_gal].choice)
+    #print(gal_objs[gui_obj.current_gal].choice)
 
 def main():
     setup_gui()

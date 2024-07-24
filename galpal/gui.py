@@ -247,8 +247,8 @@ def next_gal(gui_obj, gal_objs, link_df, desc_df, image_label, info_label, galax
     image_label.image = new_image
     galaxy_option.set(options[gui_obj.current_gal])
 
-def dropdown_select_gal(selection, gui_obj, gal_objs, link_df, desc_df, image_label):
-    #info_label.configure(text='')  <-- this will only work if dropdown menu is set up after the info box
+def dropdown_select_gal(selection, gui_obj, gal_objs, link_df, desc_df, image_label, info_label):
+    info_label.configure(text='')  #<-- this will only work if dropdown menu is set up after the info box
     # but right now dropdown menu is set up first and info box placement depends on dropdown placement
     # this could be changed but i'm not going to do it now
     # print(selection)
@@ -290,20 +290,6 @@ def setup_gui():
     image1 = prepare_image(gal_objs[gui_obj.current_gal].url)
     image_label.configure(image=image1)
 
-    # dropdown menu
-    options = [f'Galaxy {i}' for i in range(1, len(gal_objs) + 1)]
-
-    galaxy_option = tk.StringVar(root)
-    galaxy_option.set(options[0])
-
-    dropdown = tk.OptionMenu(root, galaxy_option, *options, command = partial(dropdown_select_gal, gui_obj=gui_obj, gal_objs=gal_objs, link_df=link_df, desc_df=desc_df, image_label=image_label))
-    dropdown.place(x=0, y=0)
-    dropdown.update()
-    dropdown_width, dropdown_height = dropdown.winfo_width(), dropdown.winfo_height()
-    dropdown.place_forget()
-    dropdown_y = 70
-    dropdown.place(x=(margin_width - dropdown_width) / 2, y=dropdown_y)
-
     # create label for info box
     info_label = tk.Label(root,text=' ', width=25, wraplength=180)
     # mac: width 25 and wraplength 200
@@ -315,6 +301,20 @@ def setup_gui():
     info_label_x = (margin_width - info_label_width) / 2
     info_label_y = 0.3*root_height
     info_label.place(x=info_label_x, y=info_label_y)
+
+    # dropdown menu
+    options = [f'Galaxy {i}' for i in range(1, len(gal_objs) + 1)]
+
+    galaxy_option = tk.StringVar(root)
+    galaxy_option.set(options[0])
+
+    dropdown = tk.OptionMenu(root, galaxy_option, *options, command = partial(dropdown_select_gal, gui_obj=gui_obj, gal_objs=gal_objs, link_df=link_df, desc_df=desc_df, image_label=image_label, info_label=info_label))
+    dropdown.place(x=0, y=0)
+    dropdown.update()
+    dropdown_width, dropdown_height = dropdown.winfo_width(), dropdown.winfo_height()
+    dropdown.place_forget()
+    dropdown_y = 70
+    dropdown.place(x=(margin_width - dropdown_width) / 2, y=dropdown_y)
 
     # create label for score
     score_text = str(gui_obj.grade) + ' correct out of ' + str(gui_obj.attempts) + ' attempts.'

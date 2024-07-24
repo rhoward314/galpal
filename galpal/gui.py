@@ -305,18 +305,20 @@ def setup_gui():
     dropdown.place(x=(margin_width - dropdown_width) / 2, y=dropdown_y)
 
     # create label for info box
-    info_label = tk.Label(root,text=' ', width=35, wraplength=200)
+    info_label = tk.Label(root,text=' ', width=25, wraplength=180)
+    # mac: width 25 and wraplength 200
+    # windows: width 35
     info_label.place(x=0, y=0)
     root.update()
     info_label_width, info_label_height = info_label.winfo_width(), info_label.winfo_height()
     info_label.place_forget()
     info_label_x = (margin_width - info_label_width) / 2
-    info_label_y = 0.45*root_height
+    info_label_y = 0.3*root_height
     info_label.place(x=info_label_x, y=info_label_y)
 
     # create label for score
     score_text = str(gui_obj.grade) + ' correct out of ' + str(gui_obj.attempts) + ' attempts.'
-    score_label = tk.Label(root, text=score_text, width=35, wraplength=200)
+    score_label = tk.Label(root, text=score_text, width=25, wraplength=200)
     score_label.place(x=0, y=0)
     root.update()
     score_label_width, score_label_height = score_label.winfo_width(), score_label.winfo_height()

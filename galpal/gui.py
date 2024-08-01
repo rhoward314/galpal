@@ -4,7 +4,10 @@ from PIL import ImageTk, Image
 import numpy as np
 import pandas as pd
 from functools import partial
-from galpal import galaxy # delete this later when everything is set up right
+try:
+    from galpal import galaxy # delete this later when everything is set up right
+except ModuleNotFoundError:
+    import galaxy
 import sys
 
 def prepare_image(image_url):
@@ -302,13 +305,11 @@ def setup_gui():
         label_wraplength = 200
     else:
         # other os
-        label_width = 35
-        label_wraplength = 150
+        label_width = 40
+        label_wraplength = 180
 
 
-    info_label = tk.Label(root,text=' ', width=label_width, wraplength=label_wraplength)
-    # mac: width 25 and wraplength 200
-    # windows: width 35
+    info_label = tk.Label(root, text=' ', width=label_width, wraplength=label_wraplength)
     info_label.place(x=0, y=0)
     root.update()
     info_label_width, info_label_height = info_label.winfo_width(), info_label.winfo_height()

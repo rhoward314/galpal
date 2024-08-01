@@ -5,6 +5,7 @@ import numpy as np
 import pandas as pd
 from functools import partial
 from galpal import galaxy # delete this later when everything is set up right
+import sys
 
 def prepare_image(image_url):
     """Prepare-Image
@@ -262,6 +263,10 @@ def dropdown_select_gal(selection, gui_obj, gal_objs, link_df, desc_df, image_la
     image_label.image = new_image
 
 def setup_gui():
+
+    #test
+    #print(sys.platform)
+
     # create galaxy object (this will probably go in main.py?)
     #current_gal = Galaxy.Galaxy(0,0,0,0,0,0)
 
@@ -291,7 +296,17 @@ def setup_gui():
     image_label.configure(image=image1)
 
     # create label for info box
-    info_label = tk.Label(root,text=' ', width=25, wraplength=180)
+    if sys.platform == 'darwin':
+        # mac
+        label_width = 25
+        label_wraplength = 200
+    else:
+        # other os
+        label_width = 35
+        label_wraplength = 150
+
+
+    info_label = tk.Label(root,text=' ', width=label_width, wraplength=label_wraplength)
     # mac: width 25 and wraplength 200
     # windows: width 35
     info_label.place(x=0, y=0)
@@ -318,7 +333,7 @@ def setup_gui():
 
     # create label for score
     score_text = str(gui_obj.grade) + ' correct out of ' + str(gui_obj.attempts) + ' attempts.'
-    score_label = tk.Label(root, text=score_text, width=25, wraplength=200)
+    score_label = tk.Label(root, text=score_text, width=label_width, wraplength=label_wraplength)
     score_label.place(x=0, y=0)
     root.update()
     score_label_width, score_label_height = score_label.winfo_width(), score_label.winfo_height()
